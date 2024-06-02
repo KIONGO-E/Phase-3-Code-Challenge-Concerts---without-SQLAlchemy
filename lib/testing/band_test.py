@@ -1,3 +1,4 @@
+# Importing necessary modules for testing
 from classes.many_to_many import Band
 from classes.many_to_many import Concert
 from classes.many_to_many import Venue
@@ -22,26 +23,16 @@ class TestBand:
         assert isinstance(band_1.name, str)
         assert band_1.name == "spicegurls"
 
-        # comment out the next two lines if using Exceptions
         band_1.name = 7
         assert band_1.name == "spicegurls"
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     band_1.name = 7
 
     def test_name_has_length(self):
         """names are longer than 0 characters"""
         band_1 = Band(name="boygenius", hometown="NYC")
         assert len(band_1.name) > 0
 
-        # comment out the next two lines if using Exceptions
         band_1.name = ""
         assert band_1.name == "boygenius"
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     band_1.name = ""
 
     def test_has_hometown(self):
         """Band is instantiated with a hometown"""
@@ -56,42 +47,27 @@ class TestBand:
         band_1 = Band(name="boygenius", hometown="NYC")
         assert isinstance(band_1.hometown, str)
 
-        # comment out the next three lines if using Exceptions
         band_1.hometown = "Boston"
         assert isinstance(band_1.hometown, str)
         assert band_1.hometown == "NYC"
 
-        # comment out the next two lines if using Exceptions
         band_1.hometown = 7
         assert band_1.hometown == "NYC"
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     band_1.hometown = "Boston"
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     band_1 = Band(name="boygenius", hometown=7)
 
     def test_hometown_has_length(self):
         """hometowns are longer than 0 characters"""
         band_1 = Band(name="boygenius", hometown="NYC")
         assert len(band_1.hometown) > 0
 
-        # comment out the next two lines if using Exceptions
         band_1.hometown = ""
         assert band_1.hometown == "NYC"
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     band_1.hometown = ""
 
     def test_concerts(self):
         """band has many concerts"""
         band = Band(name="boygenius", hometown="NYC")
         venue = Venue(name="Theatre", city="NYC")
-        concert_1 = Concert(date="Nov 22", band=band, venue=venue)
-        concert_2 = Concert(date="Nov 27", band=band, venue=venue)
+        concert_1 = band.play_in_venue(venue=venue, date="Nov 22")
+        concert_2 = band.play_in_venue(venue=venue, date="Nov 27")
 
         assert len(band.concerts()) == 2
         assert concert_1 in band.concerts()
@@ -101,8 +77,8 @@ class TestBand:
         """concerts must be of type Concert"""
         band = Band(name="boygenius", hometown="NYC")
         venue = Venue(name="Theatre", city="NYC")
-        Concert(date="Nov 22", band=band, venue=venue)
-        Concert(date="Nov 27", band=band, venue=venue)
+        band.play_in_venue(venue=venue, date="Nov 22")
+        band.play_in_venue(venue=venue, date="Nov 27")
 
         assert all(isinstance(concert, Concert) for concert in band.concerts())
 
@@ -111,8 +87,8 @@ class TestBand:
         band = Band(name="boygenius", hometown="NYC")
         venue_1 = Venue(name="Theatre", city="NYC")
         venue_2 = Venue(name="Ace of Spades", city="SAC")
-        Concert(date="Nov 22", band=band, venue=venue_1)
-        Concert(date="Nov 27", band=band, venue=venue_2)
+        band.play_in_venue(venue=venue_1, date="Nov 22")
+        band.play_in_venue(venue=venue_2, date="Nov 27")
 
         assert len(band.venues()) == 2
         assert venue_1 in band.venues()
@@ -123,8 +99,8 @@ class TestBand:
         band = Band(name="boygenius", hometown="NYC")
         venue_1 = Venue(name="Theatre", city="NYC")
         venue_2 = Venue(name="Ace of Spades", city="SAC")
-        Concert(date="Nov 22", band=band, venue=venue_1)
-        Concert(date="Nov 27", band=band, venue=venue_2)
+        band.play_in_venue(venue=venue_1, date="Nov 22")
+        band.play_in_venue(venue=venue_2, date="Nov 27")
 
         assert all(isinstance(venue, Venue) for venue in band.venues())
 
@@ -133,9 +109,9 @@ class TestBand:
         band = Band(name="boygenius", hometown="NYC")
         venue_1 = Venue(name="Theatre", city="NYC")
         venue_2 = Venue(name="Ace of Spades", city="SAC")
-        Concert(date="Nov 22", band=band, venue=venue_1)
-        Concert(date="Nov 27", band=band, venue=venue_2)
-        Concert(date="Nov 29", band=band, venue=venue_2)
+        band.play_in_venue(venue=venue_1, date="Nov 22")
+        band.play_in_venue(venue=venue_2, date="Nov 27")
+        band.play_in_venue(venue=venue_2, date="Nov 29")
 
         assert len(set(band.venues())) == len(band.venues())
         assert len(band.venues()) == 2
@@ -165,8 +141,7 @@ class TestBand:
         band = Band(name="boygenius", hometown="NYC")
         venue = Venue(name="Theatre", city="NYC")
         venue2 = Venue(name="Ace of Spades", city="SAC")
-        band.play_in_venue(venue=venue, date="Nov 22")
-        band.play_in_venue(venue=venue2, date="Nov 27")
+         band.play_in_venue(venue=venue2, date="Nov 22")
 
         assert (
             band.all_introductions()[0]
@@ -176,3 +151,10 @@ class TestBand:
             band.all_introductions()[1]
             == "Hello SAC!!!!! We are boygenius and we're from NYC"
         )
+
+
+
+
+
+
+
